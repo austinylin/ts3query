@@ -34,7 +34,7 @@ class TS3Connection
     end
     
     @connection.cmd("String" => "#{meth}#{params}#{options}\r",
-                    "Match" => /error id=0 msg=ok\n/) { |data|
+                    "Match" => /\n/) { |data|
       data.split("|").each do |current|
         current_data = {}
         current.split(" ").each do |entity|
