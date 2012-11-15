@@ -23,8 +23,14 @@ class TS3Connection
       end
     end
 
-    args.each do |param|
-      params += " #{param.keys[0]}=#{param[param.keys[0]]}"
+    if args[0].is_a? Hash
+      args[0].each do |k,v|
+        params += " #{k}=#{v}"
+      end
+    else
+      args.each do |param|
+        params += " #{param}"
+      end
     end
     
     @connection.cmd("String" => "#{meth}#{params}#{options}\r",
@@ -34,15 +40,15 @@ class TS3Connection
         current.split(" ").each do |entity|
           current_data[entity.split("=")[0]] = entity.split("=")[1]
         end
-        current_data.delete("error")
-        current_data.delete("id")
-        current_data.delete("msg")
+        # current_data.delete("error")
+        # current_data.delete("id")
+        # current_data.delete("msg")
         
         result << current_data
       end
     }
     result << {"id" => "0", "msg" => "ok"}
-    result.delete({})
+    # result.delete({})
     result
   end
   
